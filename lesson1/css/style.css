@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+  background-color: #dcdfe4;
+  color: #0f211a;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px 80px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.btn {
+  background-color: #adab76;
+  color: #0f211a;
+  border: none;
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+  padding: 6px 10px;
+  outline: none;
+}
+
+.btn:hover, .btn:focus {
+  background-color: #666b3a;
+  color: #dcdfe4;
+  cursor: pointer;
+}
+
+.header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  padding: 40px 0;
+}
+
+.products {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.product-item {
+  border: 1px solid #666b3a;
+  width: 20%;
+  min-width: 200px;
+  margin-bottom: 20px;
+  padding: 20px 10px;
+  text-align: center;
+}
+
+.product-item img {
+  max-width: 100%;
+}
+
+.product-title {
+  margin: 0 auto 20px;
+}
+
+.product-price {
+  margin: 0 auto 20px;
+}
+
+.btn-buy {
+  width: 100%;
+}
+/*# sourceMappingURL=style.css.map */
