@@ -47,6 +47,8 @@ class ProductsList {
 
 const list = new ProductsList();
 
+
+// Товар в Корзине
 class CartItem extends Product {
     constructor(product, count = 1) {
         super(product);
@@ -65,6 +67,8 @@ class CartItem extends Product {
     }
 }
 
+
+// Корзина
 class Cart {
     constructor(container = '.cart') {
         this.purchases = [];
