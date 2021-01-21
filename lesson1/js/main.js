@@ -26,13 +26,13 @@ class ProductsList {
         this._render();
     }
 
-    getCost() {
-        let sum = 0;
-        for (let product of this.products) {
-            sum += product.price;
-        }
-        return sum;
-    }
+    // getCost() {
+    //     let sum = 0;
+    //     for (let product of this.products) {
+    //         sum += product.price;
+    //     }
+    //     return sum;
+    // }
     //в CartItem будет использоваться метод для подсчета стоимости одного вида товара (товар * количество)
     //а в Cart  метод для подсчета общей суммы всех товаров
 
@@ -65,11 +65,17 @@ class CartItem extends Product {
         this.count = count;
     }
 
-    incCount() { } // метод увеличения количества товара
-    decCount() { } // метод уменьшения количества товара
+    incCount() {
+        this.count++;
+    } // метод увеличения количества товара
+    decCount() {
+        this.count--;
+    } // метод уменьшения количества товара
 
-    getCount() { } // метод подсчета количества
-    getCost() { } // метод посчета стоимости
+    getCost() {
+        let cost = this.price * this.count;
+        return cost;
+    } // метод посчета стоимости
 
     render() {
         return `<div class="cart-item">
@@ -86,17 +92,40 @@ class Cart {
     constructor(container = '.cart') {
         this.purchases = [];
         this.container = document.querySelector(container);
-
     }
 
-    add() { } // метод добавления товара в корзину
-    remove() { } // метод удаления товара из корзины
-    clear() { } // метод очистки корзины
+    add(product) {
+        const item = new CartItem(product);
+        this.purchases.push(item);
+
+        this.render();
+    } // метод добавления товара в корзину
+
+    remove() {
+
+        this.render();
+    } // метод удаления товара из корзины
+    clear() {
+        this.purchases = [];
+
+        this.render();
+    } // метод очистки корзины
 
     // getCount() { } // метод подсчета количества
-    getCost() { } // метод посчета стоимости
+    getCost() {
+        let cost = 0;
+        for (let purchasesEl of this.purchases) {
+            cost = cost + purchasesEl;
+        }
+        return cost;
+    } // метод посчета стоимости
 
-    render() { } // метод для рендера списка покупок
+    render() {
+        for (let purchasesEl of this.purchases) {
+            this.container.insertAdjacentHTML('beforeend', purchasesEl.render());
+        }
+    } // метод для рендера списка покупок
+
 }
 
 
