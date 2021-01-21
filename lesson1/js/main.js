@@ -26,6 +26,16 @@ class ProductsList {
         this._render();
     }
 
+    getCost() {
+        let sum = 0;
+        for (let product of this.products) {
+            sum += product.price;
+        }
+        return sum;
+    }
+    //в CartItem будет использоваться метод для подсчета стоимости одного вида товара (товар * количество)
+    //а в Cart  метод для подсчета общей суммы всех товаров
+
     _fetchData() { //пока захардкожено, без сервера
         this.data = [
             { id: 1, title: 'Notenook', price: 2000 },
@@ -58,6 +68,9 @@ class CartItem extends Product {
     incCount() { } // метод увеличения количества товара
     decCount() { } // метод уменьшения количества товара
 
+    getCount() { } // метод подсчета количества
+    getCost() { } // метод посчета стоимости
+
     render() {
         return `<div class="cart-item">
                 <h3 class="cart-title">${this.title}</h3>
@@ -80,11 +93,14 @@ class Cart {
     remove() { } // метод удаления товара из корзины
     clear() { } // метод очистки корзины
 
-    getCount() { } // метод подсчета количества
+    // getCount() { } // метод подсчета количества
     getCost() { } // метод посчета стоимости
 
     render() { } // метод для рендера списка покупок
 }
+
+
+//старый код
 
 // const products = [
 //     { id: 1, title: 'Notenook', price: 2000 },
