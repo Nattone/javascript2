@@ -3,6 +3,9 @@ const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-a
 
 //метод на xhr для получения данных. Нужно переделать в promise.
 //для примера, использовать не будем.
+
+//что фактически сделать: добавить возвращение нового промиса и в определённых
+//местах расставить resolve и reject
 let getData = (url, cb) => { //cb - callback
     let xhr = new XMLHttpRequest();
     xhr.open(GET, url, true);
