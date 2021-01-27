@@ -28,6 +28,23 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 40px 0;
+    position: relative;
+}
+
+.cart {
+    position: absolute;
+    right: 0;
+    top: 40px + 28px;
+    width: 100px;
+    height: 100px;
+    background-color: #adab76;
+    // color: #0f211a;
+    opacity: 0;
+    transition: opacity .3s ease;
+
+    &.active {
+        opacity: 100%;
+    }
 }
 
 .logo {
