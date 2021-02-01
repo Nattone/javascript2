@@ -179,21 +179,27 @@ class Cart {
         }
 
         if (this.purchases.length > 0) {
-            const cleanButton = document.createElement("button");
-            cleanButton.classList.add('cart-clean', 'btn');
-            cleanButton.innerText = 'Очистить корзину';
-            cleanButton.addEventListener('click', () => this.clean());
+            let cleanButton = document.querySelector('.cart-clean');
+            if (!cleanButton) {
+                cleanButton = document.createElement("button");
+                cleanButton.classList.add('cart-clean', 'btn');
+                cleanButton.innerText = 'Очистить корзину';
+                cleanButton.addEventListener('click', () => this.clean());
 
-            document.querySelector('.cart-wrapper').insertAdjacentElement('beforeend', cleanButton);
+                document.querySelector('.cart-wrapper').insertAdjacentElement('beforeend', cleanButton);
+            }
 
             const emptyText = document.querySelector('.cart-empty');
             if (emptyText) {
                 emptyText.remove();
             }
         } else {
-            const emptyText = document.createElement("span");
-            emptyText.classList.add('cart-empty');
-            emptyText.innerText = 'Корзина пуста.';
+            let emptyText = document.querySelector('.cart-empty');
+            if (!emptyText) {
+                emptyText = document.createElement("span");
+                emptyText.classList.add('cart-empty');
+                emptyText.innerText = 'Корзина пуста.';
+            }
 
             document.querySelector('.cart-wrapper').insertAdjacentElement('beforeend', emptyText);
 
