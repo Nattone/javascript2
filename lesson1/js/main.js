@@ -1,161 +1,220 @@
-const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+const API = 'https://gist.githubusercontent.com/Nattone/49660fa6ce529a0eed7d6c24d339c991/raw/b4f85175d027602d5bd4958e1228975e9aad253a';
 
+// Item - любой элемент абстрактной структуры, хранящий набор элементов
+class Item {
+    constructor(product) {
+        const {
+            title,
+            price = 0,
+            id,
+            img = '../lesson1/img/placeholder.png" alt="placeholder'
+        } = product;
 
-//метод на xhr для получения данных. Нужно переделать в promise.
-//для примера, использовать не будем.
-
-//что фактически сделать: добавить возвращение нового промиса и в определённых
-//местах расставить resolve и reject
-let getData = (url, cb) => { //cb - callback
-    let xhr = new XMLHttpRequest();
-    xhr.open(GET, url, true);
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-            if (xhr.status !== 200) {
-                console.log('Возникла ошибка ', xhr.status, xhr.statusText);
-            }
-            else {
-                cb(xhr.responseText);
-            }
-        }
-    }
-}
-
-// ******************************
-
-class Product {
-    constructor(product, img = '../lesson1/img/placeholder.png" alt="placeholder') {
-        let { product_name, price = 0, id_product } = product;
-        this.title = product_name;
+        this.title = title;
         this.img = img;
         this.price = price;
-        this.id = id_product;
-        this.rendered = false;
+        this.id = id;
     }
 
     render() {
-        this.rendered = true;
-        return `<div class="product-item">
+        return `<div class="product-item" data-id="${this.id}">
                     <img src="${this.img}" alt="${this.title}">
                     <h3 class="product-title">${this.title}</h3>
-                    <p  class="product-price">${this.price}</p>
-                    <button class="btn btn-buy">В корзину</button>
+                    <p class="product-price">${this.price} ₽</p>
+                    <button
+                        class="btn btn-buy"
+                        data-id="${this.id}"
+                    >Купить</button>
                 </div>`;
     }
 }
 
+
+// класс Product полностью наследует класс Item. Семанически они разные.
+class Product extends Item { }
+
 class ProductsList {
-    constructor(container = '.products') {
-        this.data = []; //хранит в себе все данные, полученные от сервера. необработанные
-        this.products = []; //массив созданных на основе данных экземпляров класса Product
-        this.container = document.querySelector(container); //контейнер на стр, куда отрендеренный товар добавляется
+    constructor(containerSelector = '.products', cart) {
+        this.data = []; // хранит в себе все данные, полученные от сервера. необработанные
+        this.products = []; // массив созданных на основе данных экземпляров класса Product
+        this.container = document.querySelector(containerSelector); // контейнер на стр, куда отрендеренный товар добавляется
+        this.cart = cart; // ссылка на объект корзины
+
         this._fetchData()
             .then(() => this._render());
-        // this._render();
     }
 
     _fetchData() {
-        return fetch(`${API}/catalogData.json`)
+        return fetch(`${API}/catalog.json`)
             .then(result => result.json())
             .then(data => {
                 this.data = data;
-                for (let dataEl of this.data) { //проитерировать все данные, полученные от сервера
-                    const product = new Product(dataEl); //происходит создание товара, передаем кусочек данных 
+                for (let { id_product, product_name, ...dataEl } of this.data) { //проитерировать все данные, полученные от сервера
+                    const product = new Product({
+                        id: id_product,
+                        title: product_name,
+                        ...dataEl
+                    }); // происходит создание товара, передаем кусочек данных 
                     this.products.push(product);
                 }
-                this._render();
             })
-
-
-        //без сервера:
-        // this.data = [
-        //     { id: 1, title: 'Notenook', price: 2000 },
-        //     { id: 2, title: 'Keyboard', price: 200 },
-        //     { id: 3, title: 'Mouse', price: 100 },
-        //     { id: 4, title: 'Gamepad' },
-        // ];
-
     }
 
-    _render() { //рендерит товары
-        for (let product of this.products) { //проитерировать все данные, полученные от сервера
-            if (product.rendered) {
-                continue;
-            }
+    // рендерит товары
+    _render() {
+        this.container.innerHTML = '';
+        for (let product of this.products) { // проитерировать все данные, полученные от сервера
             this.container.insertAdjacentHTML('beforeend', product.render());
+
+            const block = this.container.querySelector(`.product-item[data-id="${product.id}"]`);
+            const button = block.querySelector('.btn-buy');
+            button.addEventListener('click', () => this.cart.add(product));
         }
     }
 }
-
-const list = new ProductsList();
 
 
 // Товар в Корзине
-class CartItem extends Product {
-    constructor(product, count = 1) {
-        super(product);
-        this.count = count;
+class CartItem extends Item {
+    constructor(item) {
+        super(item);
+        this.count = 1;
     }
 
+    // метод увеличения количества товара
     incCount() {
         this.count++;
-    } // метод увеличения количества товара
+    }
+
+    // метод уменьшения количества товара
     decCount() {
         this.count--;
-    } // метод уменьшения количества товара
+    }
 
+    // метод посчета стоимости
     getCost() {
-        let cost = this.price * this.count;
+        const cost = this.price * this.count;
         return cost;
-    } // метод посчета стоимости
+    }
 
     render() {
-        return `<div class="cart-item">
-                <h3 class="cart-title">${this.title}</h3>
-                <p class="cart-price">${this.price}</p>
-                <button class="btn btn-remove">Удалить</button>
-            </div>`;
+        return `<div class="cart-item" data-id="${this.id}">
+                    <h3 class="cart-title">${this.title}</h3>
+                    <p class="cart-price">Цена за шт: ${this.price} ₽</p> <!-- цена этого товара -->
+                    <p class="cart-count">Количество: ${this.count} шт</p> <!-- количество этого товара -->
+                    <p class="cart-cost">Общая стоимость: ${this.getCost()} ₽</p> <!-- стоимость этого товара -->
+                    <button class="btn btn-remove">Удалить</button>
+                </div>`;
     }
 }
-
 
 // Корзина
 class Cart {
-    constructor(container = '.cart') {
+    constructor(containerSelector = '.cart-items') {
         this.purchases = [];
-        this.container = document.querySelector(container);
+        this.container = document.querySelector(containerSelector);
+
+        this._render();
     }
 
+    // метод добавления товара в корзину
     add(product) {
-        const item = new CartItem(product);
-        this.purchases.push(item);
+        const item = this.purchases.find((item) => item.id === product.id);
 
-        this.render();
-    } // метод добавления товара в корзину
+        if (item) {
+            item.incCount();
+        } else {
+            this.purchases.push(new CartItem(product));
+        }
 
-    remove() {
+        this._render();
+    }
 
-        this.render();
-    } // метод удаления товара из корзины
-    clear() {
-        this.purchases = [];
+    // метод удаления товара из корзины
+    remove(product) {
+        const item = this.purchases.find((item) => item.id === product.id);
 
-        this.render();
-    } // метод очистки корзины
+        if (item.count > 1) {
+            item.decCount();
+        } else {
+            this.purchases.splice(this.purchases.indexOf(item), 1);
+        }
 
-    // getCount() { } // метод подсчета количества
-    getCost() {
+        this._render();
+    }
+
+    // очистка корзины
+    clean() {
+        this.purchases = []
+        this._render();
+    }
+
+    // метод подсчета общего количества
+    getTotalCount() {
+        let count = 0;
+        for (let purchase of this.purchases) {
+            count = count + purchase.count;
+        }
+        return count;
+    }
+
+    // метод посчета общей стоимости
+    getTotalCost() {
         let cost = 0;
-        for (let purchasesEl of this.purchases) {
-            cost = cost + purchasesEl;
+        for (let purchase of this.purchases) {
+            cost = cost + purchase.getCost();
         }
         return cost;
-    } // метод посчета стоимости
+    }
 
-    render() {
-        for (let purchasesEl of this.purchases) {
-            this.container.insertAdjacentHTML('beforeend', purchasesEl.render());
+    _render() {
+        this.container.innerHTML = '';
+
+        for (let purchase of this.purchases) {
+            this.container.insertAdjacentHTML('beforeend', purchase.render());
+
+            const block = this.container.querySelector(`.cart-item[data-id="${purchase.id}"]`);
+            const button = block.querySelector('.btn-remove');
+            button.addEventListener('click', () => this.remove(purchase));
         }
-    } // метод для рендера списка покупок
 
+        if (this.purchases.length > 0) {
+            const cleanButton = document.createElement("button");
+            cleanButton.classList.add('cart-clean', 'btn');
+            cleanButton.innerText = 'Очистить корзину';
+            cleanButton.addEventListener('click', () => this.clean());
+
+            document.querySelector('.cart-wrapper').insertAdjacentElement('beforeend', cleanButton);
+
+            const emptyText = document.querySelector('.cart-empty');
+            if (emptyText) {
+                emptyText.remove();
+            }
+        } else {
+            const emptyText = document.createElement("span");
+            emptyText.classList.add('cart-empty');
+            emptyText.innerText = 'Корзина пуста.';
+
+            document.querySelector('.cart-wrapper').insertAdjacentElement('beforeend', emptyText);
+
+            const cleanButton = document.querySelector('.cart-clean');
+            if (cleanButton) {
+                cleanButton.remove();
+            }
+
+        }
+
+    } // метод для рендера списка покупок
 }
+
+const cart = new Cart('.cart-items');
+const list = new ProductsList('.products', cart);
+
+
+
+const cartBtn = document.querySelector('.cart-btn');
+const addClass = document.querySelector('.cart-wrapper');
+cartBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    addClass.classList.toggle('open');
+});
