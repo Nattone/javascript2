@@ -7,7 +7,7 @@ class Item {
             title,
             price = 0,
             id,
-            img = '../lesson1/img/placeholder.png" alt="placeholder'
+            img = '../lesson1/img/placeholder.png" alt="placeholder"'
         } = product;
 
         this.title = title;

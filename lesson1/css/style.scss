@@ -1,7 +1,3 @@
-h3 {
-    margin: 0;
-}
-
 body {
     margin: 0;
     background-color: #f7e8e3;
@@ -10,7 +6,13 @@ body {
     margin: 0 auto;
     padding: 0 40px 80px;
     box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
 }
+
+h3 {
+    margin: 0;
+}
+
 .btn {
     background-color: #d7ad9d;
     color: #020101;
@@ -19,7 +21,7 @@ body {
     padding: 6px 10px;
     outline: none;
     font-size: 14px;
-
+    font-family: 'Montserrat', sans-serif;
 
     &:hover,
     &:focus {
@@ -49,7 +51,7 @@ body {
         background-color: #d7ad9d;
         position: absolute;
         right: 0;
-        top: 40px + 28px + 2px;
+        top: 40px + 28px + 4px;
         transition: transform .3s ease;
         transform: rotateX(90deg);
         transform-origin: top;
@@ -57,8 +59,10 @@ body {
         &.open {
             opacity: 96%;
             transform: rotateX(0);
+            border-bottom: 1px solid #946659
         }
     }
+
     &-item {
         position: relative;
         padding: 0 0 20px;
@@ -75,6 +79,12 @@ body {
             left: 0;
         }
     }
+
+    &-total-cost {
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
     &-btn,
     &-clean {
         border: 1px solid #946659;
@@ -116,7 +126,7 @@ body {
 }
 
 .product-title {
-    margin: 0 auto 20px;
+    margin: 10px auto;
 }
 
 .product-price {

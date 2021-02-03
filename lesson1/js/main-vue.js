@@ -51,17 +51,19 @@ const Shop = {
 
         // очистка корзины
         clean() {
-            this.purchases = []
+            this.purchases = [];
         },
 
-        // // метод подсчета общего количества
-        // getTotalCount() {
-        //     let count = 0;
-        //     for (let purchase of this.purchases) {
-        //         count += purchase.count;
-        //     }
-        //     return count;
-        // }
+        // подсчёт общей стоимости корзины
+        getTotalCost() {
+            let sum = 0;
+            for (let { price, count } of this.purchases) {
+                sum += (price * count);
+            }
+            return sum;
+        }
+
+
 
     },
     mounted() {

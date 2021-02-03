@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <title>Интернет-магазин</title>
 </head>
 
@@ -55,12 +57,18 @@
                             <h3 class="cart-title">{{el.title}}</h3>
                             <p class="cart-price">Цена за шт: {{el.price}} ₽</p> <!-- цена этого товара -->
                             <p class="cart-count">Количество: {{el.count}} шт</p> <!-- количество этого товара -->
-                            <p class="cart-cost">Общая стоимость: ₽</p>
+                            <p class="cart-cost">Общая стоимость: {{el.price * el.count}} ₽</p>
                             <!-- стоимость этого товара -->
                             <button class="btn btn-remove" @click="remove(el)">Удалить</button>
                         </div>
                     </div>
-                    <button class="btn cart-clean" type="button" @click="clean()">Очистить корзину</button>
+                    <div class="cart-sum" v-if="purchases.length > 0">
+                        <div class="cart-total-cost">Сумма покупок: {{getTotalCost()}} ₽</div>
+                        <button class="btn cart-clean" type="button" @click="clean()">
+                            Очистить корзину
+                        </button>
+                    </div>
+                    <span class="cart-empty" v-else>Корзина пуста</span>
                 </div>
             </div>
         </header>
