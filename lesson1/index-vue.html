@@ -49,32 +49,38 @@
                     </path>
                 </svg>
             </div>
-            <div class="cart">
-                <button class="btn cart-btn" type="button" @click="toggleCart()">Корзина</button>
-                <div class="cart-wrapper" v-bind:class="{ open: isCartOpen }">
-                    <div class="cart-items">
-                        <div class="cart-item" v-for="el of purchases" :key="el.id">
-                            <h3 class="cart-title">{{el.title}}</h3>
-                            <p class="cart-price">Цена за шт: {{el.price}} ₽</p> <!-- цена этого товара -->
-                            <p class="cart-count">Количество: {{el.count}} шт</p> <!-- количество этого товара -->
-                            <p class="cart-cost">Общая стоимость: {{el.price * el.count}} ₽</p>
-                            <!-- стоимость этого товара -->
-                            <button class="btn btn-remove" @click="remove(el)">Удалить</button>
+            <div class="right">
+                <form class="search">
+                    <input type="text" class="search-input" placeholder="Поиск" v-model="search">
+                    <!-- <button class="btn search-btn">Поиск</button> -->
+                </form>
+                <div class="cart">
+                    <button class="btn cart-btn" type="button" @click="toggleCart()">Корзина</button>
+                    <div class="cart-wrapper" v-bind:class="{ open: isCartOpen }">
+                        <div class="cart-items">
+                            <div class="cart-item" v-for="el of purchases" :key="el.id">
+                                <h3 class="cart-title">{{el.title}}</h3>
+                                <p class="cart-price">Цена за шт: {{el.price}} ₽</p> <!-- цена этого товара -->
+                                <p class="cart-count">Количество: {{el.count}} шт</p> <!-- количество этого товара -->
+                                <p class="cart-cost">Общая стоимость: {{el.price * el.count}} ₽</p>
+                                <!-- стоимость этого товара -->
+                                <button class="btn btn-remove" @click="remove(el)">Удалить</button>
+                            </div>
                         </div>
+                        <div class="cart-sum" v-if="purchases.length > 0">
+                            <div class="cart-total-cost">Сумма покупок: {{getTotalCost()}} ₽</div>
+                            <button class="btn cart-clean" type="button" @click="clean()">
+                                Очистить корзину
+                            </button>
+                        </div>
+                        <span class="cart-empty" v-else>Корзина пуста</span>
                     </div>
-                    <div class="cart-sum" v-if="purchases.length > 0">
-                        <div class="cart-total-cost">Сумма покупок: {{getTotalCost()}} ₽</div>
-                        <button class="btn cart-clean" type="button" @click="clean()">
-                            Очистить корзину
-                        </button>
-                    </div>
-                    <span class="cart-empty" v-else>Корзина пуста</span>
                 </div>
             </div>
         </header>
         <main>
             <div class="products">
-                <div class="product-item" v-for="el of products" :key="el.id">
+                <div class="product-item" v-for="el of filtered" :key="el.id">
                     <img :src="el.img" :alt="el.title">
                     <h3 class="product-title">{{el.title}}</h3>
                     <p class="product-price">{{el.price}} ₽</p>

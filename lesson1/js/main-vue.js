@@ -6,9 +6,16 @@ const Shop = {
             products: [],
             cart: [],
             purchases: [],
-            isCartOpen: false
+            isCartOpen: false,
+            search: ''
         }
     },
+    computed: {
+        filtered() {
+            return this.products.filter(item => new RegExp(this.search, 'i').test(item.title));
+        }
+    },
+
     methods: {
         getJson(url) {
             return fetch(url)
