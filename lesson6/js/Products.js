@@ -4,9 +4,11 @@ export const Products = {
     components: {
         Product
     },
-    data: {
-        catalogUrl: '/catalog.json',
-        products: []
+    data() {
+        return {
+            catalogUrl: '/catalog.json',
+            products: []
+        }
     },
     methods: {},
     // computed: {
