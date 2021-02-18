@@ -10,13 +10,12 @@ export const Products = {
             products: []
         }
     },
-    methods: {},
     // computed: {
     //     filtered() {
     //         return this.products.filter(item => new RegExp(this.search, 'i').test(item.title));
     //     }
     // },
-    mounted() { //?????
+    mounted() {
         this.$root.getJson(`${this.$root.API + this.catalogUrl}`)
             .then(data => {
                 this.data = data;
@@ -31,10 +30,11 @@ export const Products = {
             })
 
     },
-    template: ` <div class="products">
+    template: `<div class="products">
                     <Product v-for="el of products"  
-                    :key="el.id+product"
-                    :product="el"
-                    ></Product>
+                        :key="el.id"
+                        :product="el"
+                        :add="this.$root.onProductClick"
+                    />
                 </div>`
 }

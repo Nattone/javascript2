@@ -4,7 +4,6 @@ const Shop = {
             API: 'https://gist.githubusercontent.com/Nattone/49660fa6ce529a0eed7d6c24d339c991/raw/b4f85175d027602d5bd4958e1228975e9aad253a',
             catalogUrl: '/catalog.json',
             products: [],
-            cart: [],
             purchases: [],
             isCartOpen: false,
             search: ''
