@@ -1,6 +1,6 @@
 export const Product = {
     props: ['product'],
-    template: `<div class="product">
+    template: `<div class="product-item">
                     <img :src="product.img" :alt="product.title">
                     <h3 class="product-title">{{product.title}}</h3>
                     <p class="product-price">{{product.price}} ₽</p>
