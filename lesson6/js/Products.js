@@ -32,7 +32,6 @@ export const Products = {
 
     },
     template: ` <div class="products">
-                    // <Product v-for="el of filtered"></Product>
                     <Product v-for="el of products"  
                     :key="el.id+product"
                     :product="el"
