@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <title>Интернет-магазин</title>
 </head>
 
@@ -45,8 +47,14 @@
                 </path>
             </svg>
         </div>
-        <button class="btn btn-cart" type="button">Корзина</button>
-        <div class="cart"></div>
+        <div class="cart">
+            <button class="btn cart-btn" type="button">Корзина</button>
+            <div class="cart-wrapper">
+                <div class="cart-items">
+                </div>
+                <!-- <button class="btn cart-clean" type="button">Очистить корзину</button> -->
+            </div>
+        </div>
     </header>
     <main>
         <div class="products">
